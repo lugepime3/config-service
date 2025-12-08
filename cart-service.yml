@@ -2,6 +2,16 @@ spring:
   application:
     name: cart-service
 
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: configuration-server
+
+  config:
+    import: 'optional:configserver:'
+
+
   datasource:
     url: jdbc:h2:mem:car_db
     driver-class-name: org.h2.Driver
@@ -34,7 +44,7 @@ management:
 info:
   app:
     name: cart-service
-    description: SOY_CONFIG_SERVER_REAL   # 👈 este cambio es importante
+    description: Service for managing carts-from github
     version: 1.0.0
 
 eureka:
