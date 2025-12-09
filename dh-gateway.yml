@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: dh-gateway
+
+  config:
+    import: "optional:configserver:"
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        - id: dh-checkout-service
+          uri: lb://DH-CHECKOUT-SERVICE
+          predicates:
+            - Path=/checkout/**
+          filters:
+            - AddRequestHeader=X-Request-From, gateway
+            - AddResponseHeader=X-Response-Name, ${spring.application.name}
+        - id: dh-product-service
+          uri: lb://DH-PRODUCT-SERVICE
+          predicates:
+            - Path=/product/**
+          filters:
+            - AddRequestHeader=X-Request-From, gateway
+            - AddResponseHeader=X-Response-Name, ${spring.application.name}
+
+server:
+  port: 8084
