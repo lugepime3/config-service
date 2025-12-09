@@ -2,9 +2,6 @@ spring:
   application:
     name: dh-gateway
 
-  config:
-    import: "optional:configserver:"
-
   cloud:
     gateway:
       discovery:
