@@ -3,6 +3,8 @@ spring:
     name: nw-gateway
 
   cloud:
+    loadbalancer:
+      enabled: true    
     gateway:
       discovery:
         locator:
