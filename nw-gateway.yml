@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: nw-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+        - id: nw-category-service
+          uri: lb://NW-CATEGORY-SERVICE
+          predicates:
+            - Path=/categories/**
+          filters:
+            - AddRequestHeader=X-Request-From, gateway
+            - AddResponseHeader=X-Response-Name, gateway-${spring.application.name}
+        - id: nw-supplier-service
+          uri: lb://NW-SUPPLIER-SERVICE
+          predicates:
+            - Path=/suppliers/**
+          filters:
+            - AddRequestHeader=X-Request-From, gateway
+            - AddResponseHeader=X-Response-Name, gateway-${spring.application.name}
+        - id: nw-product-service
+          uri: lb://NW-PRODUCT-SERVICE
+          predicates:
+            - Path=/products/**
+          filters:
+            - AddRequestHeader=X-Request-From, gateway
+            - AddResponseHeader=X-Response-Name, gateway-${spring.application.name}
+
+server:
+  port: 8084
