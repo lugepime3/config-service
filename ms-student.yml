@@ -1,39 +1,21 @@
-spring:
-  application:
-    name: ms-student
-  #Use Config Server
-  config:
-    import: 'optional:configserver:'
-
-  cloud:
-    config:
-      discovery:
-        enabled: true
-        service-id: ms-config-server
-
 server:
   port: 8084
 
 custom:
-  message: Loaded from Config Server
+  message: "Hola, este mensaje viene desde GitHub y el Config Server"
 
-#Actuator
+# Actuator
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: "*"
   info:
     env:
       enabled: true
-    app:
-      name: ${spring.application.name}
-      description: Student Service
-      version: 1.0.0
 
-#Actuator Redirect URLs for Eureka
+# Esta parte de Eureka está bien que esté aquí
 eureka:
   instance:
-    statusPageUrlPath: http://localhost:${server.port}/actuator/info
-    healthCheckUrlPath: http://localhost:${server.port}/actuator/health
-#  hostname: localhost
+    statusPageUrlPath: /actuator/info
+    healthCheckUrlPath: /actuator/health
