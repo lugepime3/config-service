@@ -2,20 +2,24 @@ server:
   port: 8084
 
 custom:
-  message: "Hola, este mensaje viene desde GitHub y el Config Server"
+  message: "Loaded From GitHub Config"
 
 # Actuator
 management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info
   info:
     env:
       enabled: true
+    app:
+      name: ${spring.application.name}
+      description: Student Service
+      version: 1.0.0
 
-# Esta parte de Eureka está bien que esté aquí
+#Actuator Redirect URLs for Eureka
 eureka:
   instance:
-    statusPageUrlPath: /actuator/info
-    healthCheckUrlPath: /actuator/health
+    statusPageUrlPath: http://localhost:${server.port}/actuator/info
+    healthCheckUrlPath: http://localhost:${server.port}/actuator/health
