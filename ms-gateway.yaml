@@ -1,0 +1,35 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-gateway
+#use config server to load properties for the gateway application
+  config:
+    import: "optional:configserver:"
+
+#Enable service discovery for the gateway to dynamically discover routes from Eureka
+#Automatically create routes based on service instances registered in Eureka
+#with the specified service ID (enabled=true only develop)
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true
+
+#Control and decouple routes from Eureka and define custom routes manually
+      routes:
+        - id: ms-student
+          uri: lb://MS-STUDENT
+          predicates:
+            - Path=/school/student/**
+          filters:
+            - StripPrefix=1
+            - AddRequestHeader=X-Request-From, gateway
+            - AddResponseHeader=X-Response-Name, ${spring.application.name}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
